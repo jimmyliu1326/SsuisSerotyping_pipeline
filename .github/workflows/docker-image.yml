@@ -8,7 +8,7 @@ on:
 
 env:
   tag: 1.0
-  img_name: ${{ github.repository }}
+  img_name: jimmyliu1326/ssuis_srst2
   
 
 jobs:
