@@ -182,10 +182,10 @@ if(($SingleOrPaired ne "pe") and ($SingleOrPaired ne "se")){
 # chdir "recN";
 
 # if($SingleOrPaired eq "pe"){
-# 	system("srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_recN --log --gene_db $recN_input --forward $forward --reverse $reverse --save_scores");
+# 	system("srst2 --input_pe $fastq_directory/*.fastq* --forward $forward --reverse $reverse --output $scoresName\_recN --log --gene_db $recN_input --forward $forward --reverse $reverse --save_scores");
 # }
 # elsif($SingleOrPaired eq "se"){
-# 	system("srst2 --input_se $fastq_directory/*.fastq --output $scoresName\_recN --log --gene_db $recN_input --save_scores");
+# 	system("srst2 --input_se $fastq_directory/*.fastq* --output $scoresName\_recN --log --gene_db $recN_input --save_scores");
 # }
 
 # my $recNResults = glob("$scoresName\_recN__genes*.txt");
@@ -218,7 +218,7 @@ if(($SingleOrPaired ne "pe") and ($SingleOrPaired ne "se")){
 # 	$recCount++;
 # }
 
-# my $fastq_directory/*.fastq = join(' ', @ssuis);
+# my $fastq_directory/*.fastq* = join(' ', @ssuis);
 
 # #ORGANIZE SPECIES CONFIRMATION OUTPUT
 # system("mkdir pileups");
@@ -240,10 +240,10 @@ if(($SingleOrPaired ne "pe") and ($SingleOrPaired ne "se")){
 #ORGANIZE SYSTEM COMMANDS
 my @commands;
 if($SingleOrPaired eq "pe"){
-	@commands = ("srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
+	@commands = ("srst2 --input_pe $fastq_directory/*.fastq* --forward $forward --reverse $reverse --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2 --input_pe $fastq_directory/*.fastq* --forward $forward --reverse $reverse --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2 --input_pe $fastq_directory/*.fastq* --forward $forward --reverse $reverse --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
 }
 elsif($SingleOrPaired eq "se"){
-	@commands = ("srst2 --input_se $fastq_directory/*.fastq --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2 --input_se $fastq_directory/*.fastq --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2 --input_se $fastq_directory/*.fastq --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
+	@commands = ("srst2 --input_se $fastq_directory/*.fastq* --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2 --input_se $fastq_directory/*.fastq* --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2 --input_se $fastq_directory/*.fastq* --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
 }
 
 # chdir "..";
