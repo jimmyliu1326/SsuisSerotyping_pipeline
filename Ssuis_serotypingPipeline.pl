@@ -178,75 +178,75 @@ if(($SingleOrPaired ne "pe") and ($SingleOrPaired ne "se")){
 }
 
 #CHECK IF STRAIN ACTUALLY BELONGS TO THE SPECIES STREPTOCOCCUS SUIS
-mkdir "recN";
-chdir "recN";
+# mkdir "recN";
+# chdir "recN";
 
-if($SingleOrPaired eq "pe"){
-	system("srst2.py --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_recN --log --gene_db $recN_input --forward $forward --reverse $reverse --save_scores");
-}
-elsif($SingleOrPaired eq "se"){
-	system("srst2.py --input_se $fastq_directory/*.fastq --output $scoresName\_recN --log --gene_db $recN_input --save_scores");
-}
+# if($SingleOrPaired eq "pe"){
+# 	system("srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_recN --log --gene_db $recN_input --forward $forward --reverse $reverse --save_scores");
+# }
+# elsif($SingleOrPaired eq "se"){
+# 	system("srst2 --input_se $fastq_directory/*.fastq --output $scoresName\_recN --log --gene_db $recN_input --save_scores");
+# }
 
-my $recNResults = glob("$scoresName\_recN__genes*.txt");
+# my $recNResults = glob("$scoresName\_recN__genes*.txt");
 
-open my $recNs, "<$recNResults" or die "Can't open recN results file!";
+# open my $recNs, "<$recNResults" or die "Can't open recN results file!";
 
-my @ssuis;
-my @nonssuis;
-my $recCount = 0;
-foreach my $recN (<$recNs>){
-	$recN =~ s/\r?\n//;
+# my @ssuis;
+# my @nonssuis;
+# my $recCount = 0;
+# foreach my $recN (<$recNs>){
+# 	$recN =~ s/\r?\n//;
 
-	if($recCount > 0){
-		my @info = split(/\s+/, $recN);
+# 	if($recCount > 0){
+# 		my @info = split(/\s+/, $recN);
 
-		if(scalar(@info) > 1){
-			if(substr($info[1], 0, 4) eq "recN"){
-				if($SingleOrPaired eq "pe"){
-					push(@ssuis, "$fastq_directory/$info[0]$forward.fastq");
-					push(@ssuis, "$fastq_directory/$info[0]$reverse.fastq");
-				}
-				elsif($SingleOrPaired eq "se"){
-					push(@ssuis, "$fastq_directory/$info[0]*.fastq");
-				}
-			}
-			else{push(@nonssuis, $info[0])};
-		}
-	}
+# 		if(scalar(@info) > 1){
+# 			if(substr($info[1], 0, 4) eq "recN"){
+# 				if($SingleOrPaired eq "pe"){
+# 					push(@ssuis, "$fastq_directory/$info[0]$forward.fastq");
+# 					push(@ssuis, "$fastq_directory/$info[0]$reverse.fastq");
+# 				}
+# 				elsif($SingleOrPaired eq "se"){
+# 					push(@ssuis, "$fastq_directory/$info[0]*.fastq");
+# 				}
+# 			}
+# 			else{push(@nonssuis, $info[0])};
+# 		}
+# 	}
 
-	$recCount++;
-}
+# 	$recCount++;
+# }
 
-my $ss = join(' ', @ssuis);
+# my $fastq_directory/*.fastq = join(' ', @ssuis);
 
-#ORGANIZE SPECIES CONFIRMATION OUTPUT
-system("mkdir pileups");
-system("mkdir sorted_bam");
-system("mkdir scores");
-system("mv *.pileup ./pileups");
-system("mv *.sorted.bam ./sorted_bam");
-system("mv *.scores ./scores");
+# #ORGANIZE SPECIES CONFIRMATION OUTPUT
+# system("mkdir pileups");
+# system("mkdir sorted_bam");
+# system("mkdir scores");
+# system("mv *.pileup ./pileups");
+# system("mv *.sorted.bam ./sorted_bam");
+# system("mv *.scores ./scores");
 
-close($recNs);
-system("mv $recNResults $scoresName\_speciesConfirmation.txt");
+# close($recNs);
+# system("mv $recNResults $scoresName\_speciesConfirmation.txt");
 
-#Check if there are any S. suis in the dataset
-if(scalar(@ssuis) < 1){
-	print "No S. suis in the dataset";
-	exit;
-}
+# #Check if there are any S. suis in the dataset
+# if(scalar(@ssuis) < 1){
+# 	print "No S. suis in the dataset";
+# 	exit;
+# }
 
 #ORGANIZE SYSTEM COMMANDS
 my @commands;
 if($SingleOrPaired eq "pe"){
-	@commands = ("srst2.py --input_pe $ss --forward $forward --reverse $reverse --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2.py --input_pe $ss --forward $forward --reverse $reverse --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2.py --input_pe $ss --forward $forward --reverse $reverse --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
+	@commands = ("srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2 --input_pe $fastq_directory/*.fastq --forward $forward --reverse $reverse --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
 }
 elsif($SingleOrPaired eq "se"){
-	@commands = ("srst2.py --input_se $ss --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2.py --input_se $ss --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2.py --input_se $ss --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
+	@commands = ("srst2 --input_se $fastq_directory/*.fastq --output $scoresName\_MLST --log --mlst_db $MLST_input --mlst_definitions $MLST_definitions_file --save_scores", "srst2 --input_se $fastq_directory/*.fastq --output $scoresName\_VirulenceFactors --log --gene_db $virulence_input --save_scores", "srst2 --input_se $fastq_directory/*.fastq --output $scoresName --log --mlst_db $fasta_input --mlst_definitions $definitions_file --save_scores");
 }
 
-chdir "..";
+# chdir "..";
 mkdir "MLST";
 chdir "MLST";
 
@@ -290,6 +290,7 @@ mkdir "Serotyping";
 chdir "Serotyping";
 
 #RUN SEROTYPING PIPELINE
+print $commands[2];
 system($commands[2]);
 
 my $ResultsName = glob("$scoresName\__mlst__*.txt");
@@ -639,12 +640,12 @@ foreach my $readings (@virStrain) {
 	$strainNum++;
 }
 
-if(scalar(@nonssuis) > 0){
-	my $vir_rep = "\tN/A" x $factorNum;
-	foreach my $non (@nonssuis){
-		print $combined_results "$non\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\t-$vir_rep\n";
-	}
-}
+# if(scalar(@nonssuis) > 0){
+# 	my $vir_rep = "\tN/A" x $factorNum;
+# 	foreach my $non (@nonssuis){
+# 		print $combined_results "$non\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\tN/A\t-$vir_rep\n";
+# 	}
+# }
 
 #MAKES SURE CHILD DIES IF PARENT IS INTERUPTED
 sub signal_handler {
